@@ -48,4 +48,15 @@ class SliderController extends Controller
         //return redirect()->route('slider');
         return redirect()->route('slider')->with('message', 'Cập nhật trạng thái thành công!');
   }
+
+  //xây dựng chưucs năng delete : 
+
+
+  public function delete(Request $request)
+  {
+      //lấy id từ route để đẩy vào params để có param ở model mới làm chức năng delete đựoc 
+      $params['id']=$request->id;
+      $this->model->DeleteItem($params,['task'=>'delete-item']);
+      return redirect()->route('slider')->with('message', 'Đã xoá thành công !');
+  }
 }

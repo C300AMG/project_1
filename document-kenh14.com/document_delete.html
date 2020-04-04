@@ -1,0 +1,23 @@
+// xoá thì xoá phần tử đồng thời redirect lại trang slider kèm theo câu thông báo đã coá thành công 
+phân tích : 
+khi click vào link delete thì nó không cần view ở function controller 
+chỉ cần xoá được phần tử và trở lại đúng trang đó thôi 
+Bước 1 : 
+vào controller xây dựng function deleete 
+cũng giôngs như trang change-status cũng request url từ tập tin web đã khai báo trước đó rồi : 
+Route::get('delete/{id}', [ 'as' =>$controllerName.'/delete', 'uses'=>$controller.'delete'])->where('id', '[0-9]+');
+trang delete có dạng : http://kenh14.com/admin/slider/delete/3
+ta cần request về id chỉ cần id thôi thì ta biết mình cần xoá cái thằng nào 
+Bước 2 : 
+thực hiẹn như các bước ở change-status 
+$params['id'] = $request->id;
+$this->model->deleteItem($params,['task'=>'delete-item']);
+//return redirect()->route('slider');
+return redirect()->route('slider')->with('message', 'Đã xoá thành công !');
++lấy url id về đẩy vào params 
++redirect + thông báo 
+Bước 3 qua model viết chưucs năng :
+
+viết funtion nêu ở task = delete-item thì thực hiên chức năng này : 
+$deletedRows = App\Flight::where('active', 0)->delete()
+==> self::where('id')->delete();

@@ -70,6 +70,16 @@ $(document).ready(function(){
 		window.location.href = pathname + "?" + link.slice(0,-1);//hàm cắt chuỗi dấu &
 		
 	});
+
+
+
+	
+	$('.btn-delete').on('click',function() {
+			if (!confirm("Do you want to delete")) {
+				return false;
+			}
+		});
+
 	
 	
 
