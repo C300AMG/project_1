@@ -45,6 +45,7 @@ class SliderController extends Controller
        $params['currentStatus'] = $request->status;
        $params['id'] = $request->id;
        $this->model->UpdateStatus($params,['task'=>'change-status']);
-        return redirect()->route('slider');
+        //return redirect()->route('slider');
+        return redirect()->route('slider')->with('message', 'Cập nhật trạng thái thành công!');
   }
 }
