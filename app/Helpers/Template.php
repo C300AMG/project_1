@@ -32,7 +32,7 @@ class Template
 	public static function showButtonAction($id,$controllerName){
 		$tmplButton = [
 			'edit'   => ['title' => 'Chỉnh Sửa', 	'class'    => 'btn-success', 'icon' => 'fa-pencil', 'route-name' => $controllerName.'/form'],
-			'delete' => ['title' => 'Xóa',      	 'class'    => 'btn-danger', 'icon'  => 'fa-trash', 'route-name'  => $controllerName.'/delete'],
+			'delete' => ['title' => 'Xóa',      	 'class'    => 'btn-danger btn-delete', 'icon'  => 'fa-trash', 'route-name'  => $controllerName.'/delete'],
 			'info'   => ['title' => 'xem thông tin', 'class' => 'btn-warning', 'icon' => 'fa-eye', 'route-name'    => $controllerName.'/info'],
 		];
 

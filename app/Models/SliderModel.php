@@ -75,6 +75,8 @@ public function CountItemsStatus($params = null, $options = null){
  }
  return $result;
 }
+
+//model cập nhật lại status (kích hoạt = chưua kích hoạt)
 public function UpdateStatus($params = null, $options = null)
 {
   
@@ -85,6 +87,13 @@ public function UpdateStatus($params = null, $options = null)
   }
 }
 
+//xây dựng chức năng delete items 
+public function DeleteItem($params = null, $options = null)
+{
+  if($options['task'] == 'delete-item'){
+   self::where('id',$params['id'])->delete();
+  }
+}
 
 
 

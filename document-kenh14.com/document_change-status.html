@@ -1,4 +1,32 @@
+Đổi trạng thái từ kích hoạt sang chưa kích hoạt và ngược lại :
+-trong route ta đã khai báo đường dẫn change-status với status và id 
+http://kenh14.com/admin/slider/change-status-inactive/3 : Đây là url đã khai báo
+giờ muốn từ http://kenh14.com/admin/slider/change-status-inactive/3 
+sang http://kenh14.com/admin/slider/change-status-active/3
 
+---> tức là chỉ mình status được update lại khác với ban đầu còn id thì được giữ nguyên 
+trong document Laravel cho update :
+App\Flight::where('active', 1)
+->update(['delayed' => 1]);
+
+phân tích :
+where(tham số , tham số được câp nhật )
+->update('sstatus'=> tham số status)
+Vậy công việc bây giờ là tìm params đã được định nghiã ở web : 
+-khi click vào kích hoạt sẽ chuyển đến trang change-status 
+tạo 1 trang mới ở controller 
+
+
+// hiển thị thông báo khi thay đổi thanh công 
+return redirect()->route('slider')->with('message', 'Cập nhật trạng thái thành công!'); controller
+
+vào indexx show hiển thị nội dung cần thông báo 
+luuw ý để có dấu x thì :chèn câu boostrap này vào 
+<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+</button>
+dưới này là nội dung thông báo 
+để JS thi nên tách biệt cái thông báo này thanh folder riêng 
 
 
 
