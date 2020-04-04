@@ -75,7 +75,15 @@ public function CountItemsStatus($params = null, $options = null){
  }
  return $result;
 }
-
+public function UpdateStatus($params = null, $options = null)
+{
+  
+  if($options['task'] = 'change-status'){
+    $status = ($params['currentStatus'] == 'active') ? 'inactive' : 'active';
+      self::where('id', $params['id'])
+            ->update(['status' => $status]);
+  }
+}
 
 
 

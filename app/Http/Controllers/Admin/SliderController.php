@@ -39,5 +39,12 @@ class SliderController extends Controller
           
         ]);
     }
-  
+  //trang change-status : trang này có chức năng lấy từ url để đẩy vào params
+   public function status(Request $request)
+  {
+       $params['currentStatus'] = $request->status;
+       $params['id'] = $request->id;
+       $this->model->UpdateStatus($params,['task'=>'change-status']);
+        return redirect()->route('slider');
+  }
 }
