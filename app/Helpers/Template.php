@@ -61,11 +61,8 @@ class Template
 
 	public static function GroupByStatus($controllerName,$itemsStatus,$colorActive,$paramsSearch){
 		
-		echo '<pre>'; 
-		print_r($paramsSearch);
-		echo '</pre>'; 
-
 		
+
 		$xhtml = '<div class="col-md-6">';
 
 		$tmplStatus =config('zvn.template.status');

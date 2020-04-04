@@ -15,6 +15,8 @@
         <div class="x_panel">
 
             @include('admin.templates.x_title',['title'=>'Bộ lọc'])
+           
+            @include('admin.templates.notify')
             <div class="x_content">
                 <div class="row">
                     {!! $showGroupStatus !!}
