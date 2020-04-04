@@ -1,0 +1,200 @@
+==================================DOCUMENT_FOR_SEARCH==================================
+Hướng dẫn chức năng search :
+Đầu tiên: cũng viết hàm chức năng block search trong template
+với cấu trúc 
+function
+$xhtml = null;
+return $xhtml;
+--Cắt toàn bộ block search html trong phần index qua tempplate
+--Tạo 1 fuction chức năng là showButtonSearch với tham số controllerName này 
+cấu trúc :
+function
+$xhtml = div
+;
+$xhtml = sprintf làm việc với tham số 
+$xhtml =<div>
+--Phân tích chút xíu :
+ta có trang slider có tìm kiếm theo : ID, name , status, desc,username, ...
+thì trang category chỉ có tìm kiếm theo ID với name thôi 
+--->Như vậy là có thể custom cho linh hoạt 1 tý
+---những cái tìm kiếm đó là những cái li a, không muốn nó cố định như thế 
+thì ta nên định nghĩa lại và chia trường hợp cho từng trang thì hợp lí.
+--Nếu không định nghĩa thì  ta chỉ đỗ ra dữ liệu của 1 đoạnHTML cô định,trang naof cũng v
+- kéo tập tin zvn đã định nghĩa vào kiếm
+--------------------=====Cách làm ========------------------------
+--cơ chế hoạt động của search :
+-- chúng ta cần lấy giá trị rồi truyền vào params bên model mới sử lý :
+--- giống như bên status active thì nó thêm điều kiện để đổ dữ liẹu nào cần lây ra index thôi
+bên này ta cũng làm tương tự 
+
+
+###Phân tích :
+--khi chúng ta tìm phần params ở controller sẽ được cập nhật lại, thì cais listItem dựa vào params
+được cập nhật lại thì cái Items của nó sẽ đổ ra dữ liệu khác nhau.
+--chúng ta phải biết được người dùng search theo field nào ?
+--khi người dùng chọn field để search và nhập giá trị vào thì ta có dc 2 cái params
+--khi người dùng click vào nút tìm kiếm : đẩy lên url 1 đường 
+
+link này có tham số là field_search và field_status 
+
+suy ra bây giờ ta phải lâý được cái tham số đó để truyền cho link
+
+=====Viết chưc năng cho những tham số đó 
+
+
+
+bước 1 : ta cũng tiến hành lấy ra params : search_field, search_value
+ để biết người dùng muốn search theo field nào
+ -- viết sự kiện js khi click vào input thì value thay đổi tuơng ứng
+ ----đầu tiên khai báo tìm kiếm và xoá tìm kiếm mỗi cái có 2 tham số :
+
+$("a.select-field").click(function(e){
+e.preventDefault();
+let field = $(this).data('field');
+let fieldName = $(this).html();
+$("button.btn-active-field").html(fieldName + '<span class="caret"></span>');
+//lấy field gắn vaò cho inputSearchField
+$inputSearchField.val(field);
+
+});
+
+----> ĐÂY LÀ sự kiện VIẾT về field để biết người dùng search theo field nào
+
+$btnSearch.click(function(){
+var pathname = window.location.pathname;
+let search_field = $inputSearchField.val();
+let search_value = $inputSearchValue.val();
+window.location.href = pathname + "?" + "search_field=" + search_field + "&search_value=" + search_value;
+
+})
+
+-----> Đây là sự kiện khi click vào nut tìm kiếm :
+-- sẽ sinh ra 1 đường link gồm search theo field nào và giá trị mà người dùng nhập vào ô tìm kiếm
+bây giờ vân đề là khi nguời dùng clikc vào nút tìm kiếm thì :
++ phải giữ lại cái field mà ngta đã chọn 
++ phải giữ lại cái gia trị mà người ta đã nhập vào 
+mà cả 2 cái này mình đó có rồi :
+
+
+**** giữ lại cái field
+Đó là params['search'] mà chúng ta đã định nghĩa ra và truyền vào model.Chúng ta đã truyền cái params đó ra ngoài viêw rồi
+--Như thế cho nên ra ngoài view truyền thêm cho nó đó là tham số params['search'] và phần template 
+
+-- trong phần xhtml để in ra ngoài view ta có 1 ô input chứa đoạn text có value ===> Dựa vào value này ta truyền vào tham số để 
+giữ cái phần mà người dùng đã nhạp vào
+
+
+
+**** giữ lại cái giá trị mà người dùng đã nhập vào 
+
+
+Bây giờ ta đã có param['search']['field'] <=> đó là all,id,username,... nhưng cái mà chúng cần đó là tìm kiếm theo all,
+tìm kiếm theo id, tìm kiếm theo username,...
+    Đơn gian đặc 1 biến = cái params đó rồi suất ra thôi
+    *** Chú ý :$nameField =(in_array($paramsSearch['field'], $fieldInController[$controllerName])) ? $paramsSearch['field'] : "all";
+Cần có điều kiện nếu người dùng chọn không khớp vs những field đã đề ra thì không bị lỗi underfine index
+
+
+
+
+-----------------------Lọc field search-----------ra các danh sách phía dưới 
+Bây giờ dựa vào những giá trị này để truy vấn lại lọc ra theo đung với từng field
+--Lọc sẽ chia làm 2 nhom :
+--- 1 là lọc theo tất  cả
+--- 2 là lọc theo từng trạng thái
+
+ta thêm điều kiện cho nó :
+Nếu cái params của phần tử search không rỗng thì ta mới search theo 2 trường hợp đó là phần tử All 
+
+trong trường hợp ngược lại search theo phần tử field
+ ---- trong trường hợp search theo field không để người dùng thêm vào field không có ở trong có trong phần định nghĩa 
+ ở slider ---> nó sẽ báo lỗi không tìm thấy cai field đó bởi vậy mới thêm else if
+
+
+ tạo 1 mảng chứa các phàn tử field cho phép lọc == field đã được định nghĩa ở trang slider
+
+ mảng này đặt là protected bởi vì : trang này là trang search về slider khác với 
+ +category
+ +articles
+ +user
+ ------> cho nên nó không thể public ngoài class slider được bởi vì nó sẽ lấy những cột khác nhau trong database
+ ------> không nên chọn private bởi vì ở frontend ta còn có thể kế thừa class slider về phần search này 
+ Điều kiện nếu search theo từng field : $params['search']['field'] có tồn tại trong cai mảng 
+ định nghĩa ở trên không (Đặc biệt cái mảng này nâng cấp hơn nó được đặt kèm với protected) để sau này class khác có thể 
+ dùng lại được cái class ListItems này được
+
+
+ +Tìm theo chính xác một cái cột nào đó : câu query này đơn giản chỉ là params tìm kiếm theo field LIKE với từ người dùng nhập vào
+ --LIKE = NỐI
+ cú pháp câu LIKE = 'LIKE', %{}%
+ 
+
+ + tìm theo all thì ta lọc qua từng cái field được cho phép ở trên với câu sql là LIKE or id, LIKE or name, ...--> orwhere
+
+
+ -------------------------------GIỮ LẠI VALUE VÀ FIELD CỦA SEARCH KHI CHUYỂN TRANG KHÁC--------------------------
+
+ phân tích :
+ muốn chuyển qua kích hoạt rồi mới tìm kiếm :
+ ngoài search_field=all&search_value=zendvn.com : field và value 
+ thì url nó phải nhận thêm : filter_status=active , inactive, ...
+ 
+
+ đường link của nó sẽ có dạng : 
+ kenh14.com/admin/slider?filter_status=inactive&search_field=all&search_value=zendvn.com
+
+ muốn thêm params = filter_status=inactive thì cần phải :
+ viết JS sự kiện :
+ -Đầu tiên khai báo thêm params có dạng : let params = ['filter_status'];
+ -thứ 2 cũng khai báo thêm biến link để xíu gán vào url,ban đầu biến link này rỗng
+ -Bây giờ chúng ta mới dùng vòng lặp để duyệt 
+
+
+ =========XOÁ TÌM KIẾM ======================
+ phân tichs :
+ bây giờ xoá tìm kiếm thì muốn field = rỗng và value = rỗng và không ảnh hưởng đến filter_status
+ làm y như tìm kiêm xong chỗ window.location.href +link.lệnh cắt chuỗi
+
+
+
+ ========optimate cho status===========
+ nếu như kiếm 1 value mà có 2 trạng thái đều có value đó ,
+ thì giá trị của những số ghi trên status cũng phair thay đổi giống phần search
+ --lúc đầu những còn số này nó dc lấy từ DB ,
+ kích hoạt : có 2
+ chưa kích hoạt có 1
+ bây giờ search  1 value có 1 cái ở kích hoạt và 1 cái ở chưa kích hoạt
+ thì kết quả status phải là : kích hoạt 1, chưa kích hoạt 1===> search tìm thấy 1 kq ở kích hoạt và 1 kq ở chưa kích hoạt
+ thì giá trị số đó nằm trên status là = 1
+ tất cả = 2
+ ---Muốn giữ cái field và value khi chuyển đổi từ trạng thái này sang trạng thái khác 
+ thêm tham số params['search'] vào template của phần status để khi đổ dữ liệu thì nó giữ lại cái tham số đc truyền vào 
+ 
+
+ sau khi thêm tham số vào chưc năng nhóm chức năng statsu 
+ban đầu url lúc chuyển status qua lại có dạng : 
+//http://kenh14.com/admin/slider?filter_status=inactive
+$link ban đầu = route($controllerName). "?filter_status=" .$value['status'];
+
+
+
+===>>>link mới phải có dạng :
+ //kenh14.com/admin/slider?filter_status=inactive   |   &search_field=description&search_value=trình
+link mới = link cũ + &search_field=description&search_value=trình
+Mà &search_field=description&search_value=trình === &search_field= .$paramsSearch['field'] .search_value= .$paramsSearch['value']
+tóm lại : có nhiều cách để đẩy dữ liệu lên url
++dùng post, get,session,
+
+
+========> fixx lỗi cho phần phân trang cũng phải giữ lại
+         
+url phân sang trang kế tiếp :
+ http://kenh14.com/admin/slider?page=2  : {{ $items->links('admin.templates.pagination_custom') }}
+
+        {{ $items->appends(request()->input())->links('admin.templates.pagination_custom') }}
+
+hightlight : tạo trong helper 1 cái hightlight để viết chức năngg show
+phải gọi highlight template ở thằng list bởi vì nội dung được in ra từ đó 
++cần phải có cái chuỗi giá trị value và field và người dùng nhấp vào để hightlight
++ cái chuỗi value + field đó là params['search']
++bổ sung 2 tham số này ở helper và list

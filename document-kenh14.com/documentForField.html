@@ -1,0 +1,144 @@
+==================================DOCUMENT_FOR_FIELD==================================
+Hướng dẫn các bước làm chức năng: Block lọc danh sách 
+Bước 1 :
+Từ phần index ta có block field là 1 khối HTML cố định
+-Vào Template để tạo mới 1 chức năng để đổ dữ liệu field từ HTML cố định -> đúng với csdl có trong Database.
+-Tên chức năng đó là : lọc và nhóm những phần tử có status giống nhau lại(GroupByStatus)
+-Cấu trúc  của template sẽ là :
+Funtion 
+$xhtml = null;
+$xhtml = sprintf();
+return $xhtml;
+-Vào index use template để đổ dữ liệu 
+-Đặt 1 biến = chức năng được xây dựng từ template (showGroupStatus) để đổ dữ liệu ra với tham số là $status(cái tham số này được gọi ra ở listItem Model)
+-{{showGroupStatus}} ở phần được cắt ra 
+-Muốn đổ dl ra index được lấy từ Db thì ở model gọi phương thức để lấy select những cột status ra(phải nhóm các phần tử của cột đó lại = groupBy)
+-Cấu trúc của model sẽ là :
+funtion
+$result = null;
+if(task)
+$result = seft :: select query
+$result query;
+return result
+-Qua controller khởi tạo 1 biến = tên chức năng được xây dựng bên model để truyền tham số ra ngoài view để Tempate foreach dữ liệu từ database để đếm được ở cột status có bnhiu phần tử là inactive có bnhiu phần tử active
+    [0] => Array
+        (
+            [status] => active
+            [count] => 2
+        )
+
+    [1] => Array
+        (
+            [status] => inactive
+            [count] => 1
+        )
+sau khi đã biết được có bnhiu active là có bao nhiêu inactive rồi thì tiến hành foreach 
+'<a href="%s" type="button" class="btn btn-primary">
+				active <span class="badge bg-white">5</span>
+				</a>'
+cái thẻ a này có All và 5 cần phải đổ ra trước
+-để đổ ra active.active chính là name của status và 5 chính là count của status
+-cái $itemsStatus đây chính là biến = phương thức mà model đã lấy ra được có bao nhiêu active và inactive
+foreach($itemsStatus as $value){
+	tức là ta lấy value duyệt trong $itemsStatus để lấy ra active và 
+	5 => active = $value['count']
+	active => $value['status']
+-Còn về nút All thì làm sao ?
+định nghĩa, dùng array_unshift để đặt phần tử all ra đầu mảng
+            dùng array_sum để tính tổng count dùng cột array_colums
+
+}
+
+->>>>>>>>>>>xong phần đổ dữ liệu
+
+--Định nghĩa filter_status trên http
+-----Bây giờ gán link vào trong mỗi button:Link có dạng http://kenh14.com/admin/slider?filter_status=active
+-Định nghĩa cái đường link này route($controllerName). "?filter_status=" .$value['status']
+
+
+->>>>>>>>>>>>>>>Gán link xong
+lấy filter_status từ http request xuống để đổ màu(active) và lọc theo trạng thái
+Định nghĩa 1 cái params để truyền vào model cần lấy trỏ tới input(giá trị cần lấy, giá trị mặc định)
+ $this->params['filter']['status']=$request->input('filter_status', 'all');
+
+
+ ->>>>>>>>>>>>active : gồm có class
+đặt biến = biến để in ra class
+nếu $a =(params['filter']['status'])? 'primary' : 'btn danger'
+->>>>>>>>>>>>>xing active
+
+
+
+->>>>>>>>>>>>field
+trong model lúc đầu thì nó in ra tất cả các phần tử :Bây giờ chèn thêm 1 điều kiện 
+params['filter']['status'] tồn tại và params['filter']['status'] !== all
+điều kiện $query->where(cột status trong DB = params['filter']['status'])
+->>>>>>>>>>>>>>>>>>>>xong field
+
+
+
+--------->Nâng cấp chức năng field : all,active,inactive -> tất cả, kích hoạt, chưa kích hoạt
+
+Định lại những cái tên 
+      'template'=>[
+        'status' =>[
+					'all'      =>['name'=>'Tất cả', 'class'=>'btn-warning'],
+					'active'   =>['name'=>'Kích Hoạt ', 'class'=>'btn-success'],
+					'inactive' =>['name'=>'Chưa Kích Hoạt !', 'class'=>'btn-danger'],
+					// 'block' =>['name'=>'Bị khóa', 'class'=>'btn-danger'],
+			          'default'    =>['name'=>'Chưa xác định', 'class'=>'btn-danger'],
+        ],
+    ]
+        hoặc lấy của phần status ở trên 
+        rồi config vào 
+--Đặt 1 biến $a để hiển thị những cái vừa định nghĩa ở đây ra : 
+nhớ là đổ ra chữ active là : $value['status']
+còn bây giờ  đổ ra active == kích hoạt thì : $a = $tmplStatus[$value['status']] 
+-- in biến $a['name']
+---$tmplStatus[$value['status']] : tức là ở ngoài ->template rồi.Muốn trỏ tới name thì phải qua status
+
+không được :  $a = $tmplStatus['status']; bởi vì trong foreach ($itemsStatus as $value) nó đang dyệt qua $value
+			: Mà status chúng ta đã có count và status rồi.
+
+--------->Nâng cấp nếu có thêm trường hợp block nữa
+Muốn thêm một status = block nữa thì :
+Đầu tiền vào tập tin định nghĩa :Nếu trường hợp chưa định nghĩa trường block thì 
+ 'default'    =>['name'=>'Chưa xác định', 'class'=>'btn-danger'],
+ cho 1 trường mặc đinh vào
+Muốn kích hoạt ở trên field và dưới đồng bộ : đều là kích hoạt,chưa kích hoạt,block
+sau khi foreach ($itemsStatus as $value) {
+ta có $value['status'] : Đây chính là active,inactive,block,...
+Bây giờ đặt 1 biến = $value['status'] để kiểm tra xem nó có tồn tại trong tmplStatus không
+Nếu tồn tại thì lấy chính nó, không thì lấy giá trị default
+
+
+--Ở trên showButtonStatus cũng cần thêm 1 điều kiện để xuất ra cái block
+
+public static function showButtonStatus($controllerName,$id,$status){
+
+ $status = array_key_exists($status,$tmplStatus) ? $status : "default";
+		  
+		
+		$kich_hoat = $tmplStatus[$status];
+
+--trên đây không có foreach $value,tham số $status là để xuất ra ở phần định nghĩa
+--Đặt ra 1 biến nào đó kiểm tra có nằm trong phần định nghãi hay không nếu có lấy chính nó nếu không thì lấy giá trị default
+--tạo 1 biến chứa = $tmplStatus['status'] để đổ dữ liệu phía dưới :name class
+
+
+
+
+(tại sao phải đặt 1 biến = $value['status'] mà không đặt trực tiếp vào luôn)
+--Thứ nhất phần showButtonStatus ở dưới không có foreach nên không thể lấy $value vào được
+-- thứ 2 là khó nhìn
+
+
+
+
+
+
+
+
+
+
+
