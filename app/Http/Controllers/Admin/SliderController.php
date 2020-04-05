@@ -49,7 +49,7 @@ class SliderController extends Controller
         return redirect()->route('slider')->with('message', 'Cập nhật trạng thái thành công!');
   }
 
-  //xây dựng chưucs năng delete : 
+  //xây dựng trang delete : 
 
 
   public function delete(Request $request)
@@ -58,5 +58,13 @@ class SliderController extends Controller
       $params['id']=$request->id;
       $this->model->DeleteItem($params,['task'=>'delete-item']);
       return redirect()->route('slider')->with('message', 'Đã xoá thành công !');
+  }
+
+  //xây dựng trang form
+   public function form(Request $request)
+  {
+     return view($this->pathViewController . 'form',[
+        
+        ]);
   }
 }

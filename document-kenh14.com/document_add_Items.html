@@ -1,0 +1,16 @@
+add : http://kenh14.com/admin/slider/form
+--> không có bất cứ dữ liệu gì ở trong form 
+
+edit : http://kenh14.com/admin/slider/form/3
+--> hiển thị những nội dung có sẵn để sửa 
+Phân tích : 
+Bởi vì 2 cái Button  này có đường dẫn đi đến là trang Form
+Chỉ khác nhau ở điểm : 
++Không tham số ID là add 
++có tham số id là edit 
+Cách làm : 
+Đầu tiên 2 trang index và form sẽ được inclue bởi 1 trang page_header  được tách ra 
+Để 2 trang đều nhận được nội dung của trang page_header 
+Bước 2 : 
+
+TRONG page_header khai báo biến tạo sprintf rồi if else nếu true = thêm mới false chỉnh sửa

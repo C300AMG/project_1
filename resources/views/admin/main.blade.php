@@ -6,14 +6,14 @@
 <head>
     @include('admin.element.head')
 </head>
-<body class="nav-md">
+<body class="nav-sm">
     <div class="container body">
         <div class="main_container">
             @include('admin.element.sidebar')
            @include('admin.element.top_navigation')
             <!-- page content -->
             <div class="right_col" role="main">
-              @yield('content');
+              @yield('content')
                 <!--end-box-pagination-->
             </div>
             <!-- /page content -->

@@ -9,12 +9,15 @@
       $showSearch      = Template::showButtonSearch($controllerName,$params['search']);
  @endphp
  @section('content')
-  @include('admin.templates.x_title',['title'=>'Danh sách Slider'])
+@include('admin.templates.page_header',['pageIndex'=>$pageIndex = true])
+   
+   
 <div class="row">
     <div class="col-md-12 col-sm-12 col-xs-12">
         <div class="x_panel">
 
             @include('admin.templates.x_title',['title'=>'Bộ lọc'])
+
            
             @include('admin.templates.notify')
             <div class="x_content">
