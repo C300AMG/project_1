@@ -96,5 +96,20 @@ public function DeleteItem($params = null, $options = null)
 }
 
 
+public function getItem($params = null, $options = null)
+{
+  $result = null;
+  
+    if($options['task'] = 'get-item'){
+    // update lại thôi 
+    $result = self::select('id','name','description','status','link','thumb')->where('id', $params['id'])->first()->toArray();
+
+  }
+  return $result;
+}
+
+
+
+
 
 }
