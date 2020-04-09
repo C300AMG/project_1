@@ -86,6 +86,16 @@ public function UpdateStatus($params = null, $options = null)
             ->update(['status' => $status]);
   }
 }
+// getItem 
+
+
+public function getItem($params = null, $options = null)
+{
+  if($options['task'] == 'get-item'){
+   $result = self::select('id','name','description','link','status','thumb')->where('id',$params['id'])->first()->toArray();
+  }
+  return $result;
+}
 
 //xây dựng chức năng delete items 
 public function DeleteItem($params = null, $options = null)

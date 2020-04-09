@@ -27,9 +27,7 @@ class SliderController extends Controller
         $items       = $this->model->listItems($this->params, ['task'=>'admin-list-items']);
         $itemsStatus = $this->model->CountItemsStatus($this->params, ['task'=>'admin-count-items']);
   
-    // echo "<pre>";
-    // print_r($itemsStatus);
-    // echo "</pre>";
+   
 
     
         return view($this->pathViewController . 'index',[
@@ -63,8 +61,27 @@ class SliderController extends Controller
   //xây dựng trang form
    public function form(Request $request)
   {
+      $item = null;
+      if($request->id !== null){
+        $params['id'] = $request->id;
+        $item = $this->model->getItem($params,['task'=>'get-item']);
+      }
+
+      
+     
+     
      return view($this->pathViewController . 'form',[
+        'item'=>$item,
         
+      
         ]);
+      
+  }
+
+  //view trang save 
+    //xây dựng trang form
+   public function save(Request $request)
+  {
+  echo "Đây là trang save sau khi submit thành công ";
   }
 }

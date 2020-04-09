@@ -6,6 +6,10 @@ class Template
 {
 
 
+	
+
+
+
 	public static function showListHistory( $time,$by){
 		$xhtml= sprintf('<p><i class="fa fa-user"></i>%s</p>
 			<p><i class="fa fa-clock-o"></i>%s</p>',$by,date("d/m/Y", strtotime($time) ));
@@ -21,6 +25,8 @@ class Template
 		$xhtml =sprintf('<a href="%s" type="button" 
 			class="btn btn-round %s">
 			%s</a>',$link,$kich_hoat['class'],$kich_hoat['name']);
+
+		
 		return $xhtml;
 	} 
 
@@ -28,6 +34,7 @@ class Template
 		$xhtml= sprintf('<img src="%s" alt="%s" class="zvn-thumb">', asset('images/'.$controllerName.'/'.$nameThumb),$AltThumb);
 		return $xhtml;
 	}
+	
 
 	public static function showButtonAction($id,$controllerName){
 		$tmplButton = [

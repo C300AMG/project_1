@@ -9,6 +9,13 @@ return  [
 
 
       'template'=>[
+
+           'form_input'=>[
+               'class'=>'form-control col-md-6 col-xs-12',
+        ],
+            'form_label'=>[
+               'class'=>'control-label col-md-3 col-sm-3 col-xs-12',
+        ],
         'status' =>[
 					'all'             => ['name' => 'Tất cả', 'class'           => 'btn-warning'],
 					'active'          => ['name' => 'Kích Hoạt ', 'class'       => 'btn-success'],
@@ -16,6 +23,7 @@ return  [
 					// 'block'        => ['name' => 'Bị khóa', 'class'          => 'btn-danger'],
 			        'default'         => ['name' => 'Chưa xác định', 'class'    => 'btn-danger'],
         ],
+       
 
          'search' =>[
                     'all'          => ['name' => 'Tìm kiếm theo all'],

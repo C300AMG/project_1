@@ -1,0 +1,67 @@
+//custom form.blade.php gọn form html lại (cứ form là dùng collective)
+/có nhiều cách để viết gọn những mã html : tạo helper sprintf,include,collective 
+
+
+//ta phân biệt giữa edit và add bằng ID cho nên cần request id để truyền vào view rồi nhờ đó mà có thể hiển thị item cho phù hợp
+ví dụ như : dựa vào id nếu vào add thì đó là trường hợp không có item 
+                       nếu vào edit thì phải đẩy item từ DB lên tương ứng 
+
+
+Bước 1 : 
+trog Model tạo một function getItem có chức năng là lấy item để đổ lên view được lấy từ DB 
+function này có options =  task tương ứng 
+Bước 2 : vâò controller để viết trường hợp nếu task đó = 1 biến để xuất ra view
+if else như thé này :
+Đầu tiên $item = null tức là mặc định nó sẽ không có dữ liệu truyền vào 
+thứ 2 ta if nếu opttions['task'] = truền vào tương ứng thì $result = select những thứ cần lấy  với điều kiện id trong Db = id được request vào params
+lúc đầu mình dựa vào cái id trên request này để phân biết add edit nếu có id thì là edit đúng k o ?
+vậy ta lấy dc cái id trong Db để = id được lấy trong reqquest, = với 'id' trong DB để ta biết được thông tin slider nào được sửa  
+
+
+
+<div class="form-group">
+    <label for="name" class="control-label col-md-3 col-sm-3 col-xs-12">Name</label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <input class="form-control col-md-6 col-xs-12" name="name" type="text" value="Ưu đãi học phí" id="name">
+    </div>
+</div>
+
+
+<div class="form-group">
+    <label for="status" class="control-label col-md-3 col-sm-3 col-xs-12">Status</label>
+    <div class="col-md-6 col-sm-6 col-xs-12">
+        <select class="form-control col-md-6 col-xs-12" id="status" name="status">
+            <option value="default">Select status</option>
+            <option value="active" selected="selected">Kích hoạt</option>
+            <option value="inactive">Chưa kích hoạt</option>
+        </select>
+    </div>
+</div>
+
+
+==> mỗi dòng html trong cấu trúc html này giống nhau từ label đến hộp input 
+ta dùng larave colective để cấu hình lại 
+{{ Form::open([
+                 'url'            => route("$controllerName/save"),
+                 'enctype'        => 'mutipart/form-data',
+                 'accept-charset' => 'UTF-8',
+                 'class'          => 'form-horinzontal form-label-left',
+                 'id'             => 'main-form',
+
+                ]) }}
+<h3>Helooo mother fucker</h3>
+{{  Form::close() }}
+dòng trên tương ứng với :
+{{-- <form method="POST" action="http://proj_news.xyz/admin123/slider/save" accept-charset="UTF-8" enctype="multipart/form-data" class="form-horizontal form-label-left" id="main-form">
+    <input name="_token" type="hidden" value="m4wsEvprE9UQhk4WAexK6Xhg2nGQwWUOPsQAZOQ5">
+
+    đồng thơi trong tập tin route ta phải khai báo thêm 1 route cho phần save 
+    khi submit trong trang form rồi thì method post action sẽ chuyền tới 1 trang khác 
+    đó chính là trang route(save)
+khi ta gọi laravelcollective thì ta đã có được input type=hidden rồi tương ứng với csrf của template
+
+
+bây giờ khai báo từng cái label và input bằng 
+
+
+
