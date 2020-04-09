@@ -1,0 +1,97 @@
+- Bước 1 :
+tạo view cho form cho slider đẩy dữ liệu HTML lên 
+- Bước 2 : 
+url của add : http://kenh14.com/admin/slider/form
+nêu url này không có tham số id thì sẽ là form add ==> tức là dữ liệu trong form này không có từ db 
+url của edit :http://kenh14.com/admin/slider/form/2 
+nếu url này có tham số id thì form này sẽ là form edit ===> tức là dữ liệu trong form có tất cả được lấy từ DB 
+---- xong phần lnik buttton add và button edit ------ 
+3. getItem 
+4 . colective
+5. name decription
+6. formTempalte 
+7 . select Button 
+8 .form Group 
+9. thumb. 
+10. hidden (up load )
+
+--------------------------------------code --------------------------------------code
+3. 
+
+
+- bây giờ trong controller ta phải truyền vào tham số id để dựa vào id đó ta mới biết để chia trường hợp nào là add trường hợp nào là edit 
+ban đầu ta gán $item = null; tức là vừa vào form thì id = null --> đây là trang add, nếu form/2 thì id = 2. ID  trong request phải bằng với id được lấy từ DB 
+nếu $request->id !== null ;
+thì tức là edit mà edit thì ta phải lấy cái request->id này về truyền vào params để tí nữa update thì cần id request = id DB để lấy cho đúng 
+$params['id'] = $request->id;
+cho vào params với cái task là getItem
+rồi truyền ra ngoài vieww 
+
+- trong model tạo ra 1 function có tên là getItem với task là get-item 
+public function getItem($params = null, $options = null){
+$result = null ;
+if($options['task'] = 'get-item'){
+    $result = sefl::select('lấy những cột cần lấy để ddổ lên ');
+}
+return $result;
+}
+------------------Xong phân biệt được cái nào là add cai nào là edit và truyền được id ra ngoaò viêww --------------------------------------code
+4. colective 
+
+$ composer require laravelcollective/html
+Tiếp theo đổ dữ liệu lên từng label của form 
+
+{!! Form::open(['url' => 'foo/bar']) !!}
+//
+{!! Form::close() !!}
+
+phân tích : 
+bây giờ những đoạn HTML : name, description, link, thumb, status, save 
+những đonạ có cùng HTML giống nhau : name, description, link 
+
+những đoạn có HTML khác nhau :thumb, status, save 
+
+--sau khi dùng laravel colective : $nameLabel = Form::label('name', 'Name', ['class' => 'control-label col-md-3 col-sm-3 col-xs-12']);
+gồm nhiều thành phần 
+
+
+cách làm : 
+
+Bước 1 : gộp tất cả các thành thành phần này vào một cái mảng 
+
+BƯớc 2 : đem cái mảng đó vào 1 cái function làm chức năng : if elsse phân ra những trường hợp khác nhau để đổ dữ liệu 
+
+
+Bước 3 : tất nhiên mỗi cái label và input của những trường khác nhau 
+
+
+
+mỗi cái khác nhau , sẽ cho một cái type : 'a,a1,a2,a3' để phân việt từng cái 
+
+Bước 4 : 
+foreach trong $elements  để đổ ra những thành phần có trong element này 
+đồng thời với điều kiện 
+
+
+
+đặt 
+$xhtml = null;
+foreach($elements as element){
+    $elementType = (issset($element['type'])) ? $element['type'] : 'input';
+    $type = $elementType;
+    if($element['type'] == 'input'){
+        $xhtml = Đây là giá trị được đổ lên của name, link desc
+        
+    }else if($element['type'] == 'btn-submit'){
+        $xhtml = Đây là giá trị được đổ lên của btn
+    }else($element['type'] == 'thumb'){
+        $xhtml = $xhtml = Đây là giá trị được đổ lên của thumb sẽ dueọc đổ lên 
+    }
+}
+
+nnhớ add file hiiden
+----xong --------
+
+
+
+
